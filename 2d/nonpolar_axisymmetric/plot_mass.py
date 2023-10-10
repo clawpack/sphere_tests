@@ -1,7 +1,12 @@
 
 from pylab import *
+import os
 
-lines = open('_output_nosphere/zeta.txt').readlines()
+outdir = '_output_sphere0'
+cmd = "grep 'total zeta' %s/fort.amr > %s/zeta.txt" % (outdir,outdir)
+os.system(cmd)
+#lines = open('_output_nosphere/zeta.txt').readlines()
+lines = open('%s/zeta.txt' % outdir).readlines()
 mass1 = empty((len(lines),2))
 for i,line in enumerate(lines):
     tokens = line.split()
@@ -9,7 +14,11 @@ for i,line in enumerate(lines):
     dm = float(tokens[-1])
     mass1[i,:] = t,dm
 
-lines = open('_output_sphere/zeta.txt').readlines()
+outdir = '_output_sphere2'
+cmd = "grep 'total zeta' %s/fort.amr > %s/zeta.txt" % (outdir,outdir)
+os.system(cmd)
+#lines = open('_output_sphere/zeta.txt').readlines()
+lines = open('%s/zeta.txt' % outdir).readlines()
 mass2 = empty((len(lines),2))
 for i,line in enumerate(lines):
     tokens = line.split()
@@ -33,5 +42,5 @@ grid(True)
 title('Relative change in total mass',fontsize=15)
 xlabel('Hours', fontsize=12)
 
-savefig('mass2d.pdf', bbox_inches='tight')
+savefig('mass2d.png', bbox_inches='tight')
 

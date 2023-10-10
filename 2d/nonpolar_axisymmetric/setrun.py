@@ -330,6 +330,7 @@ def setgeo(rundata):
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system = 2
+    geo_data.sphere_source = 0
     geo_data.earth_radius = 6367.5e3
 
     # == Forcing Options

@@ -13,34 +13,37 @@ CLAWMAKE = $(CLAW)/clawutil/src/Makefile.common
 # ----------------------------------
 
 CLAW_PKG = geoclaw                  # Clawpack package to use
-EXE = xgeoclaw                 # Executable to create
-SETRUN_FILE = setrun.py        # File containing function to make data
-OUTDIR = _output               # Directory for output
-SETPLOT_FILE = setplot.py      # File containing function to set plots
-PLOTDIR = _plots               # Directory for plots
+EXE = xgeo                          # Executable to create
+SETRUN_FILE = setrun.py             # File containing function to make data
+OUTDIR = _output                    # Directory for output
+SETPLOT_FILE = setplot.py           # File containing function to set plots
+PLOTDIR = _plots                    # Directory for plots
+
+OVERWRITE ?= True                   # False ==> make a copy of OUTDIR first
+RESTART ?= False                    # Should = clawdata.restart in setrun
 
 # Environment variable FC should be set to fortran compiler, e.g. gfortran
 
 # Compiler flags can be specified here or set as an environment variable
 FFLAGS ?=
 
-
 # ---------------------------------
 # package sources for this program:
 # ---------------------------------
 
-GEOLIB = $(CLAW)/geoclaw/src/2d/shallow
-include $(GEOLIB)/Makefile.geoclaw
+GEOLIB = $(CLAW)/geoclaw_1d/src/1d_classic/shallow
+include $(GEOLIB)/Makefile.geoclaw_1d_classic
 
 # ---------------------------------------
 # package sources specifically to exclude
-# (i.e. if a custom replacement source 
+# (i.e. if a custom replacement source
 #  under a different name is provided)
 # ---------------------------------------
 
 EXCLUDE_MODULES = \
 
 EXCLUDE_SOURCES = \
+  #src1.f90 \
 
 # ----------------------------------------
 # List of custom sources for this program:
@@ -49,12 +52,9 @@ EXCLUDE_SOURCES = \
 MODULES = \
 
 SOURCES = \
-  ../conck.f90 \
   qinit.f90 \
-  $(CLAW)/riemann/src/rpn2_geoclaw.f \
-  $(CLAW)/riemann/src/rpt2_geoclaw.f \
-  $(CLAW)/riemann/src/geoclaw_riemann_utils.f \
-  #../src2.f90 \
+  #src1_nosphere.f90 \
+
 
 #-------------------------------------------------------------------
 # Include Makefile containing standard definitions and make options:
@@ -62,8 +62,9 @@ include $(CLAWMAKE)
 
 # Construct the topography data
 .PHONY: topo all
+
 topo:
-	python maketopo.py
+	python makegrid.py
 
 all: 
 	$(MAKE) topo

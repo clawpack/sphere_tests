@@ -15,6 +15,9 @@ import matplotlib.pyplot as plt
 from clawpack.geoclaw import topotools
 from six.moves import range
 
+x0 = 0; y0 = 0.
+
+outdir_1d = '1d_latitude/_output'
 
 #--------------------------
 def setplot(plotdata=None):
@@ -53,21 +56,19 @@ def setplot(plotdata=None):
     # Figure for surface
     #-----------------------------------------
     plotfigure = plotdata.new_plotfigure(name='Surface', figno=0)
+    plotfigure.facecolor = 'w'
+    plotfigure.figsize = (7,7)
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes('pcolor')
     plotaxes.title = 'Surface'
-    plotaxes.scaled = True
+    plotaxes.aspect_latitude = y0
+    plotaxes.xlabel = 'longitude'
+    plotaxes.ylabel = 'latitude'
+    plotaxes.title = 'Surface at time h:m:s'
+    plotaxes.xlimits = [-60,60]
+    plotaxes.ylimits = [-60,60]
 
-    def fixup(current_data):
-        import pylab
-        #addgauges(current_data)
-        t = current_data.t
-        t = t / 3600.  # hours
-        pylab.title('Surface at %4.2f hours' % t, fontsize=10)
-        pylab.xticks(fontsize=10)
-        pylab.yticks(fontsize=10)
-    plotaxes.afteraxes = fixup
 
     # Water
     plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
@@ -77,11 +78,13 @@ def setplot(plotdata=None):
     plotitem.pcolor_cmin = -1.2
     plotitem.pcolor_cmax = 1.2
     plotitem.add_colorbar = True
+    plotitem.colorbar_shrink = 0.7
+    plotitem.colorbar_extend = 'both'
     plotitem.amr_celledges_show = [0,0,0]
     plotitem.patchedges_show = 0
 
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
-    plotitem.show = False
+    #plotitem.show = False
     plotitem.plot_var = geoplot.surface_or_depth
     plotitem.contour_levels = np.linspace(0.2,1.2,11)
     plotitem.contour_colors = 'k'
@@ -91,12 +94,16 @@ def setplot(plotdata=None):
     # Figure vs. distance from axis
     #-----------------------------------------
     plotfigure = plotdata.new_plotfigure(name='1d', figno=1)
-    plotfigure.kwargs = {'figsize': (7,4)}
     #plotfigure.show = False
+    #plotfigure.kwargs = {'figsize': (7,4)}
+    plotfigure.figsize = (7,5)
+    plotfigure.facecolor = 'w'
 
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
-    plotaxes.title = 'Eta vs. distance from axis'
+    plotaxes.title = 'Eta vs. distance from axis at time h:m:s'
+    plotaxes.xlabel = 'distance (meters)'
+    plotaxes.ylabel = 'meters'
     plotaxes.xlimits = [0,8e6]
     #plotaxes.ylimits = [-1.25,0.75] # for t=5hrs
     plotitem = plotaxes.new_plotitem(plot_type='1d_from_2d_data')
@@ -113,8 +120,9 @@ def setplot(plotdata=None):
         return r,eta
 
     plotitem.map_2d_to_1d = r_eta
-    plotitem.plotstyle = 'b.'
-    plotitem.kwargs = {'markersize': 0.1}
+    plotitem.color = 'b'
+    plotitem.kwargs = {'linestyle':'none', 'marker':'o', 
+                       'fillstyle':'full', 'markersize': 0.3}
 
     plotitem = plotaxes.new_plotitem(plot_type='1d_from_2d_data')
     
@@ -136,6 +144,21 @@ def setplot(plotdata=None):
         grid(True)
 
     plotaxes.afteraxes = aa
+
+    if outdir_1d:
+
+        def mapc2p_1d(yc):
+            """Convert from latitude to meters"""
+            yp = (90.-yc) * 111e3
+            return yp
+
+        plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
+        plotitem.outdir = outdir_1d
+        plotitem.plot_var = -1
+        plotitem.plotstyle = 'r-'
+        plotitem.MappedGrid = True
+        plotitem.mapc2p = mapc2p_1d
+        
 
     #-----------------------------------------
     # Figures for gauges
