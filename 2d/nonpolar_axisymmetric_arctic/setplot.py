@@ -88,7 +88,8 @@ def setplot(plotdata=None):
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     #plotitem.show = False
     plotitem.plot_var = geoplot.surface_or_depth
-    plotitem.contour_levels = np.linspace(0.1,1.2,11)
+    plotitem.contour_levels = list(np.linspace(-0.3,-0.05,6)) + \
+                              list(np.linspace(0.05,0.3,6))
     plotitem.contour_colors = 'k'
     plotitem.amr_contour_show = [0,0,1]
 
@@ -104,9 +105,9 @@ def setplot(plotdata=None):
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
     plotaxes.title = 'Eta vs. distance from axis at time d:h:m:s'
-    plotaxes.xlabel = 'distance (meters)'
+    plotaxes.xlabel = 'distance (km)'
     plotaxes.ylabel = 'meters'
-    plotaxes.xlimits = [0,3e6]
+    plotaxes.xlimits = [0,2500]
     #plotaxes.ylimits = [-1.25,0.75] # for t=5hrs
     plotitem = plotaxes.new_plotitem(plot_type='1d_from_2d_data')
 
@@ -118,12 +119,14 @@ def setplot(plotdata=None):
         y = current_data.y
         eta = q[3,:,:]
         r = haversine(x0,y0,x,y)
-        return r,eta
+        return r/1e3,eta
 
     plotitem.map_2d_to_1d = r_eta
-    plotitem.color = 'b'
+    plotitem.color = [.4,.4,1]
     plotitem.kwargs = {'linestyle':'none', 'marker':'o', 
                        'fillstyle':'full', 'markersize': 0.5}
+
+
 
     plotitem = plotaxes.new_plotitem(plot_type='1d_from_2d_data')
     
@@ -149,9 +152,9 @@ def setplot(plotdata=None):
     if outdir_1d:
 
         def mapc2p_1d(yc):
-            """Convert from latitude to meters"""
+            """Convert from latitude to km"""
             yp = (90.-yc) * 111e3
-            return yp
+            return yp/1e3
 
         plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
         plotitem.outdir = outdir_1d

@@ -258,7 +258,7 @@ def setrun(claw_pkg='geoclaw'):
     amrdata.max1d = 60
 
     # max number of refinement levels:
-    amrdata.amr_levels_max = 2
+    amrdata.amr_levels_max = 3
 
     # List of refinement ratios at each level (length at least mxnest-1)
     amrdata.refinement_ratios_x = [4,4,4]
@@ -330,6 +330,7 @@ def setgeo(rundata):
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system = 2
+    geo_data.sphere_source = 2
     geo_data.earth_radius = 6367.5e3
 
     # == Forcing Options

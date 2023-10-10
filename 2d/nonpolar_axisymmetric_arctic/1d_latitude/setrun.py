@@ -59,7 +59,7 @@ def setrun(claw_pkg='geoclaw'):
     # For nonuniform grid, 0 <= xc <= 1 and the file grid.data should
     # define the mapping to the physical domain
 
-    clawdata.lower[0] = -90.          # xlower
+    clawdata.lower[0] = 60.          # xlower
     clawdata.upper[0] = 90.           # xupper
 
     # Number of grid cells:
