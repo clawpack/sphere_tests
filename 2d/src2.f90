@@ -51,14 +51,15 @@ subroutine src2(meqn,mbc,mx,my,xlower,ylower,dx,dy,q,maux,aux,t,dt)
             tanyR = tan(y*DEG2RAD) / earth_radius
             do i=1,mx
                 if (q(1,i,j) > dry_tolerance) then
-                    huv = q(2,i,j)*q(3,i,j)/q(1,i,j)
-                    huu = q(2,i,j)*q(2,i,j)/q(1,i,j)
-                    hvv = q(3,i,j)*q(3,i,j)/q(1,i,j)
                     q(1,i,j) = q(1,i,j) + dt * tanyR * q(3,i,j)
-                    q(2,i,j) = q(2,i,j) + dt * tanyR * 2.d0*huv
-                    q(3,i,j) = q(3,i,j) + dt * tanyR * (hvv - huu)
-                    !q(2,i,j) = q(2,i,j) + dt * tanyR * huv
-                    !q(3,i,j) = q(3,i,j) + dt * tanyR * hvv
+                    if (.false.) then
+                        ! momentum source terms that drop out if linearized:
+                        huv = q(2,i,j)*q(3,i,j)/q(1,i,j)
+                        huu = q(2,i,j)*q(2,i,j)/q(1,i,j)
+                        hvv = q(3,i,j)*q(3,i,j)/q(1,i,j)
+                        q(2,i,j) = q(2,i,j) + dt * tanyR * 2.d0*huv
+                        q(3,i,j) = q(3,i,j) + dt * tanyR * (hvv - huu)
+                    endif
                 endif
             enddo
         enddo
