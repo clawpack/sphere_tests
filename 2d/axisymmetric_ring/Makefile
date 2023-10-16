@@ -50,7 +50,6 @@ MODULES = \
 
 SOURCES = \
   ../conck.f90 \
-  ../src2.f90 \
   qinit.f90 \
   $(CLAW)/riemann/src/rpn2_geoclaw.f \
   $(CLAW)/riemann/src/rpt2_geoclaw.f \

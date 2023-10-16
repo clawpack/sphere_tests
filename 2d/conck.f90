@@ -47,11 +47,11 @@ subroutine conck(level, nvar, naux, time, rest)
                 if (mcapa > 0) then
                     zeta = zeta * alloc(iaddaux(mcapa,i,j,locaux,mitot)) 
                 endif
+
                 ! for axisymmetric solution solved for -10 < x < 10,
                 ! compute zeta over full sphere:
-                zeta = zeta * 18
-                !zeta = zeta * 18 * alloc(iaddaux(2,i,j,locaux,mitot)) &
-                !        / (deg2rad * earth_radius**2)
+                !zeta = zeta * 18
+
                 totmass = totmass + zeta
             enddo
         enddo           
