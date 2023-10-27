@@ -220,14 +220,6 @@ def setrun(claw_pkg='geoclaw'):
     clawdata.bc_upper[0] = 'wall'   # at xupper
 
 
-    # Specify type of each aux variable in amrdata.auxtype.
-    # This must be a list of length maux, each element of which is one of:
-    #   'center',  'capacity', 'xleft'  (see documentation).
-    # Isn't used for this non-amr version, but still expected in data.
-
-    amrdata = rundata.amrdata
-    amrdata.aux_type = ['center','capacity']
-
     geo_data = rundata.geo_data
 
     geo_data.dry_tolerance = 1.e-3
@@ -241,6 +233,7 @@ def setrun(claw_pkg='geoclaw'):
     geo_data.manning_coefficient =0  #.025
 
     geo_data.coordinate_system = 2  # latitude coordinates
+    geo_data.sphere_source = 2
 
     topo_data = rundata.topo_data
     topo_data.topofiles.append([1, 'flat.txt'])
