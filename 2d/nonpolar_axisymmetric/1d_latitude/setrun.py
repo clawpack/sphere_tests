@@ -236,6 +236,7 @@ def setrun(claw_pkg='geoclaw'):
     geo_data.manning_coefficient =0  #.025
 
     geo_data.coordinate_system = 2  # latitude coordinates
+    geo_data.sphere_source = 2
 
     topo_data = rundata.topo_data
     topo_data.topofiles.append([1, 'flat.txt'])

@@ -97,7 +97,7 @@ def setplot(plotdata=None):
     plotfigure.kwargs = {'figsize':(8,3), 'facecolor':'w'}
     plotaxes = plotfigure.new_plotaxes()
     plotaxes.xlimits = xlimits
-    plotaxes.ylimits = [0,7]
+    plotaxes.ylimits = [-3,5]
     plotaxes.title = 'Surface displacement'
 
     def fixticks(current_data):
