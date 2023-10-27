@@ -68,6 +68,9 @@ def setrun(claw_pkg='geoclaw'):
     from clawpack.geoclaw_1d.data import GridData1D
     rundata.add_data(GridData1D(),'grid_data')
     rundata.grid_data.grid_type = 0    # uniform grid
+    rundata.grid_data.monitor_fgmax = False  # record max h,s,etc in each cell?
+    rundata.grid_data.monitor_runup = False  # record first and last wet cells?
+    rundata.grid_data.monitor_total_zeta = True # record "total mass in wave"?
 
 
     # ---------------
