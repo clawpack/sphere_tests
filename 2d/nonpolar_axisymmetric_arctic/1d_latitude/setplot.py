@@ -4,29 +4,10 @@ import os, sys
 from imp import reload
 
 
-try:
-    from clawpack.geoclaw_1d import geoplot
-except:
-    print('Could not import from geoclaw_1d')
-
-#import clawpack.geoclaw.shallow_1d.plot as geoplot
-
+from clawpack.visclaw import geoplot
 
 import numpy
-
-try:
-    fname = '_output/fort.hmax'
-    d = numpy.loadtxt(fname)
-    etamax = numpy.where(d[:,1]>1e-6, d[:,2], numpy.nan)
-    xmax = d[:,0]
-    jmax = where(d[:,1]>0)[0].max()
-    print("run-in = %8.2f,  run-up = %8.2f" % (d[jmax,0],d[jmax,2]))
-    print('Loaded hmax from ',fname)
-except:
-    xmax = None
-    print("Failed to load fort.hmax")
-
-xlimits = [-90,90]
+xlimits = [60,90]
 
 def setplot(plotdata=None):
 
@@ -49,8 +30,6 @@ def setplot(plotdata=None):
     def fixticks(current_data):
         from pylab import ticklabel_format, plot,grid,gca
         ticklabel_format(useOffset=False)
-        if xmax is not None:
-            plot(xmax, etamax, 'r')
         grid(True)
 
     plotfigure = plotdata.new_plotfigure(name='domain', figno=0)
@@ -74,7 +53,7 @@ def setplot(plotdata=None):
     plotaxes = plotfigure.new_plotaxes()
     plotaxes.axescmd = 'subplot(212)'
     plotaxes.xlimits = xlimits
-    plotaxes.ylimits = [-600,600]
+    plotaxes.ylimits = [-6,6]
     plotaxes.title = 'momentum'
     plotaxes.afteraxes = fixticks1
 
